@@ -338,7 +338,7 @@ function showAddress() {
     
     const addresses = {
         "trc20": { address: "TGYo1yPCjJTyed37Lt1ARipg6BQBLkRPi4", network: "Tron (TRC20)" },
-        "erc20": { address: "0x335363935c8367ea960b593624b11ff4124d69c2", network: "Ethereum (ERC20)" },
+        "erc20": { address: "0x335363935c8367ea960b593624b11ff4124d69c2", network: "BNB (BEP20)" },
         "binance": { address: "1152472652", network: "Binance Pay" }
     };
     
