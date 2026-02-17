@@ -992,7 +992,7 @@ async function submitOrder() {
                 const caption = `Receipt for ${currentTransaction.amount} USDT - ${currentTransaction.bankDetails.accountName}`;
                 await sendFileToTelegram(e.target.result, file.name, caption);
                 
-                const finishMessage = `================= order finished ==============`;
+                const finishMessage = `==========================================finished===================================`;
                 await sendToTelegram(finishMessage);
                 
                 // Auto-download invoice immediately
