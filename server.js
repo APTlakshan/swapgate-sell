@@ -11,8 +11,8 @@ app.use(cors());
 app.use(express.json({ limit: '50mb' }));
 app.use(express.urlencoded({ limit: '50mb', extended: true }));
 
-// Serve static files from the public directory
-app.use(express.static(path.join(__dirname, 'public')));
+// Serve static files from the root directory
+app.use(express.static(path.join(__dirname)));
 
 // Configuration
 const TELEGRAM_BOT_TOKEN = "8549260649:AAG5h9hHumxEpvhCXuiGMrhAwx-cMrgp_ak";
@@ -97,7 +97,7 @@ app.get('/api/health', (req, res) => {
 
 // ========== SERVE HTML ==========
 app.get('/', (req, res) => {
-    res.sendFile(path.join(__dirname, 'public', 'index.html'));
+    res.sendFile(path.join(__dirname, 'index.html'));
 });
 
 // Start server

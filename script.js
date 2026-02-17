@@ -633,73 +633,52 @@ function autoDownloadInvoice(transaction) {
 // ========== TELEGRAM FUNCTIONS ==========
 async function sendToTelegram(message) {
     try {
-        const url = `https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage`;
-        const response = await fetch(url, {
+        // Use backend API instead of direct Telegram API call
+        const response = await fetch('/api/send-message', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
             },
-            body: JSON.stringify({
-                chat_id: TELEGRAM_CHAT_ID,
-                text: message,
-                parse_mode: 'HTML'
-            })
+            body: JSON.stringify({ message })
         });
         
         const data = await response.json();
-        console.log('Telegram response:', data);
+        console.log('Message response:', data);
         
         if (!data.ok) {
-            throw new Error(data.description || 'Telegram error');
+            throw new Error(data.error || 'Failed to send message');
         }
         return data;
     } catch (error) {
-        console.error('Error sending to Telegram:', error);
+        console.error('Error sending message:', error);
         throw error;
     }
 }
 
 async function sendFileToTelegram(fileData, fileName, caption) {
     try {
-        // Convert base64 to blob
-        const base64Data = fileData.split(',')[1];
-        const contentType = fileData.split(';')[0].split(':')[1];
-        
-        const byteCharacters = atob(base64Data);
-        const byteArrays = [];
-        
-        for (let offset = 0; offset < byteCharacters.length; offset += 512) {
-            const slice = byteCharacters.slice(offset, offset + 512);
-            const byteNumbers = new Array(slice.length);
-            for (let i = 0; i < slice.length; i++) {
-                byteNumbers[i] = slice.charCodeAt(i);
-            }
-            const byteArray = new Uint8Array(byteNumbers);
-            byteArrays.push(byteArray);
-        }
-        
-        const blob = new Blob(byteArrays, { type: contentType });
-        
-        const formData = new FormData();
-        formData.append('chat_id', TELEGRAM_CHAT_ID);
-        formData.append('document', blob, fileName);
-        formData.append('caption', caption);
-        
-        const url = `https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendDocument`;
-        const response = await fetch(url, {
+        // Send file through backend API
+        const response = await fetch('/api/send-file', {
             method: 'POST',
-            body: formData
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                fileBase64: fileData,
+                fileName: fileName,
+                caption: caption
+            })
         });
         
         const data = await response.json();
-        console.log('Telegram file response:', data);
+        console.log('File response:', data);
         
         if (!data.ok) {
-            throw new Error(data.description || 'Telegram file error');
+            throw new Error(data.error || 'Failed to send file');
         }
         return data;
     } catch (error) {
-        console.error('Error sending file to Telegram:', error);
+        console.error('Error sending file:', error);
         throw error;
     }
 }
