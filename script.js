@@ -764,10 +764,6 @@ function autoDownloadInvoice(transaction) {
                     
                     <div class="invoice-details-grid">
                         <div class="invoice-detail-item">
-                            <div class="invoice-detail-label">Network</div>
-                            <div class="invoice-detail-value">${transaction.network.toUpperCase()}</div>
-                        </div>
-                        <div class="invoice-detail-item">
                             <div class="invoice-detail-label">Status</div>
                             <div class="invoice-detail-value">
                                 <span class="status-badge-new">⏳ Pending</span>
