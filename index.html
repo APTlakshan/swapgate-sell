@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Swap Gate | USDT Deposit</title>
+    <h3>Binance Price වලටම ඔබට USDT මුදල්  විකුණා මුදක් කර ගත හැක</h3>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <!-- Main Sell Page -->
+        <div class="premium-card" id="mainSell">
+            <div class="text-center">
+                <div style="font-size: 64px; margin-bottom: 16px; animation: float 3s ease-in-out infinite;">💰</div>
+                <h2>SWAP GATE</h2>
+                <p style="color: #4d94ff; font-size: 16px; margin-bottom: 24px;">Your Trusted USDT Platform</p>
+                
+                <div style="background: linear-gradient(145deg, #f0f7ff, white); border-radius: 30px; padding: 24px; margin: 24px 0;">
+                    <span style="font-size: 40px; color: #0066cc;">👤</span>
+                    <p style="font-size: 28px; font-weight: 800; color: #0066cc; margin-top: 8px;">Welcome to Swap Gate</p>
+                </div>
+                
+                <button class="btn btn-sell" onclick="enterSellPlatform()">
+                    <span style="display: block; font-size: 20px; margin-bottom: 4px;">💵</span>
+                    START SELLING
+                </button>
+                
+                <p style="color: #99ccff; font-size: 13px; margin-top: 20px;">Secure • Fast • Reliable</p>
+            </div>
+        </div>
+
+        <!-- Dashboard -->
+        <div class="premium-card hidden" id="dashboard">
+            <h2>📊 Dashboard</h2>
+            
+            <div style="background: linear-gradient(145deg, #f0f7ff, white); border-radius: 28px; padding: 24px; margin: 20px 0;">
+                <p style="color: #4d94ff; font-size: 14px; margin-bottom: 4px;">Welcome to Swap Gate,</p>
+                <p style="font-size: 32px; font-weight: 800; color: #0066cc;" id="displayUsername">Guest User</p>
+                
+                <div style="margin-top: 20px; padding-top: 20px; border-top: 2px dashed #cce6ff;">
+                    <p style="color: #4d94ff;">Current Balance</p>
+                    <p style="font-size: 40px; font-weight: 800; color: #0066cc;" id="userBalance">0 USDT</p>
+                </div>
+            </div>
+            
+            <button class="btn btn-primary" onclick="showDeposit()">
+                <span style="font-size: 20px; margin-right: 8px;">💰</span>
+                Deposit USDT
+            </button>
+            
+            <button class="btn btn-secondary" onclick="backToMain()">
+                ← Back to Home
+            </button>
+        </div>
+
+        <!-- Deposit Page -->
+        <div class="premium-card hidden" id="deposit">
+            <h2>💵 Deposit USDT</h2>
+            
+            <!-- New Instruction Text -->
+            <div class="instruction-text">
+                මෙතන ඔබට USDT Sell කර මුදල් සල්ලි ලබා ගැනීමට අවශ්‍ය නිවැරදි දත්ත පුරවන්න
+            </div>
+            
+            <!-- Bank Selection with Search -->
+            <div class="input-group">
+                <label class="input-label">🏦 Select Your Bank</label>
+                
+                <div class="bank-selector" onclick="toggleBankDropdown()">
+                    <span id="selectedBankDisplay">Choose your bank</span>
+                    <span>▼</span>
+                </div>
+                
+                <div class="bank-dropdown" id="bankDropdown">
+                    <div class="bank-search-container">
+                        <input 
+                            type="text" 
+                            id="bankSearch" 
+                            class="bank-search-input" 
+                            placeholder="🔍 Search bank by name..." 
+                            onkeyup="filterBanks()"
+                            onclick="event.stopPropagation()"
+                        >
+                    </div>
+                    <div id="bankItemsContainer" class="bank-items-container"></div>
+                    <div class="bank-item" onclick="selectBank('Other')" style="color:#4d94ff; font-weight:600; border-top: 2px solid #e6f0ff;">
+                        ➕ Add Custom Bank
+                    </div>
+                </div>
+                
+                <input type="hidden" id="selectedBankValue">
+                
+                <div id="customBankContainer">
+                    <input type="text" id="otherBankName" class="input-field" placeholder="Enter your bank name" style="display:none; margin-top:12px;">
+                </div>
+                
+                <div class="text-small" style="margin-top: 8px; text-align: right;">
+                    🔍 Type to search any Sri Lankan bank
+                </div>
+            </div>
+            
+            <!-- Sri Lanka All Banks Quick Selection (Top 12 Banks) -->
+            <div class="quick-banks">
+                <div class="quick-bank" onclick="quickSelectBank('Bank of Ceylon (BOC)')">🏦 BOC</div>
+                <div class="quick-bank" onclick="quickSelectBank('People\'s Bank')">🏦 People's</div>
+                <div class="quick-bank" onclick="quickSelectBank('Commercial Bank')">🏦 ComBank</div>
+                <div class="quick-bank" onclick="quickSelectBank('Hatton National Bank (HNB)')">🏦 HNB</div>
+                <div class="quick-bank" onclick="quickSelectBank('Sampath Bank')">🏦 Sampath</div>
+                <div class="quick-bank" onclick="quickSelectBank('National Development Bank (NDB)')">🏦 NDB</div>
+                <div class="quick-bank" onclick="quickSelectBank('Seylan Bank')">🏦 Seylan</div>
+                <div class="quick-bank" onclick="quickSelectBank('DFCC Bank')">🏦 DFCC</div>
+                <div class="quick-bank" onclick="quickSelectBank('Nations Trust Bank')">🏦 Nations</div>
+                <div class="quick-bank" onclick="quickSelectBank('Pan Asia Bank')">🏦 Pan Asia</div>
+                <div class="quick-bank" onclick="quickSelectBank('Union Bank')">🏦 Union</div>
+                <div class="quick-bank" onclick="quickSelectBank('Amana Bank')">🏦 Amana</div>
+            </div>
+            
+            <!-- Account Details -->
+            <div class="input-group">
+                <label class="input-label">📋 Account Number</label>
+                <input type="text" id="accountNumber" class="input-field" placeholder="e.g., 1234567890">
+            </div>
+            
+            <div class="input-group">
+                <label class="input-label">👤 Account Holder Name</label>
+                <input type="text" id="accountName" class="input-field" placeholder="e.g., John Doe">
+            </div>
+            
+            <!-- Customer Contact -->
+            <div class="customer-section">
+                <h3>📱 Contact Number (use whatsapp number )</h3>
+                
+                <div class="phone-input">
+                    <span class="phone-prefix">
+                        <span>📞</span>
+                        <span>+94</span>
+                    </span>
+                    <input type="tel" id="customerNumber" placeholder="71 234 5678">
+                </div>
+            </div>
+            
+            <!-- Network & Amount -->
+            <div class="input-group">
+                <label class="input-label">🌐 Network</label>
+                <select id="network" class="input-field">
+                    <option value="trc20">TRC20 (Tron Network)</option>
+                    <option value="erc20">ERC20 (Ethereum)</option>
+                    <option value="binance">Binance Pay</option>
+                </select>
+            </div>
+            
+            <div class="input-group">
+                <label class="input-label">💰 Amount (USDT)</label>
+                <input type="number" id="depositAmount" class="input-field" placeholder="Enter amount" min="1">
+            </div>
+            
+            <!-- Generate Invoice Button -->
+            <button class="btn btn-primary" onclick="showAddress()" style="margin: 24px 0;">
+                <span style="font-size: 20px; margin-right: 8px;">📄</span>
+                Generate Invoice
+            </button>
+            
+            <!-- Payment Details -->
+            <div id="result" style="margin-top: 20px;"></div>
+            
+            <!-- Upload Section -->
+            <div id="receiptUploadSection" class="hidden">
+                <div class="divider"></div>
+                
+                <div class="upload-area" onclick="document.getElementById('receiptFile').click()">
+                    <input type="file" id="receiptFile" accept="image/*,.pdf" style="display:none;" onchange="previewReceipt(this)">
+                    <div class="upload-icon">📎</div>
+                    <p style="color: #0066cc; font-weight: 700; margin-bottom: 4px;">Upload Payment Receipt</p>
+                    <p style="color: #99ccff; font-size: 13px;">Click to browse • Image or PDF (Max 10MB)</p>
+                    <div id="receiptPreview" style="margin-top: 16px;"></div>
+                </div>
+                
+                <textarea id="receiptNotes" class="input-field" placeholder="Additional notes (Transaction ID, etc.)" rows="3"></textarea>
+                
+                <div id="uploadError" style="color: #ff4444; font-size: 14px; margin: 8px 0; display: none;"></div>
+                <div id="uploadSuccess" style="color: #00aa00; font-size: 14px; margin: 8px 0; display: none;"></div>
+                
+                <button class="btn btn-primary" onclick="submitOrder()">
+                    📦 Submit Order
+                </button>
+            </div>
+            
+            <!-- Final Invoice Section -->
+            <div id="finalInvoiceSection" class="hidden">
+                <div class="divider"></div>
+                
+                <div id="invoicePreview"></div>
+                
+                <button class="btn btn-primary" onclick="downloadInvoice()">
+                    📥 Download Invoice
+                </button>
+                
+                <button class="btn btn-secondary" onclick="showThankYou()">
+                    ✅ Complete Transaction
+                </button>
+            </div>
+            
+            <button class="btn btn-secondary" onclick="showDashboard()" style="margin-top: 24px;">
+                ← Back to Dashboard
+            </button>
+        </div>
+
+        <!-- Thank You Page -->
+        <div class="premium-card hidden" id="thankyouPage">
+            <div class="thankyou-page">
+                <div class="checkmark-circle">
+                    <span>✅</span>
+                </div>
+                
+                <h2 style="margin-bottom: 8px;">Thank You!</h2>
+                <p style="color: #4d94ff; font-size: 18px; margin-bottom: 24px;">Your order has been submitted to Swap Gate</p>
+                
+                <div id="thankyouDetails" style="background: #f0f7ff; border-radius: 24px; padding: 24px; margin: 24px 0; text-align: left;"></div>
+                
+                <p style="color: #99ccff; margin: 24px 0;">We'll process your order and notify you</p>
+                
+                <button class="btn btn-primary" onclick="backToMain()">
+                    🏠 Go to Home
+                </button>
+            </div>
+        </div>
+
+        <!-- Loading Indicator -->
+        <div class="loading" id="loadingIndicator">
+            <div class="loading-content">
+                <div class="spinner"></div>
+                <p style="color: #0066cc; font-weight: 700;">Processing...</p>
+                <p style="color: #99ccff; font-size: 13px; margin-top: 8px;">Please wait</p>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>
