@@ -526,7 +526,228 @@ function autoDownloadInvoice(transaction) {
         <html>
         <head>
             <title>Swap Gate Invoice - ${transaction.amount} USDT</title>
-            <link rel="stylesheet" href="styles.css">
+            <style>
+                @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap');
+                * {
+                    margin: 0;
+                    padding: 0;
+                    box-sizing: border-box;
+                }
+                body { 
+                    background: linear-gradient(165deg, #f0f7ff 0%, #e6f0fa 100%);
+                    font-family: 'Plus Jakarta Sans', 'Arial', sans-serif; 
+                    min-height: 100vh;
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                    padding: 20px;
+                }
+                .invoice-card {
+                    max-width: 500px;
+                    width: 100%;
+                    background: white;
+                    border-radius: 32px;
+                    overflow: hidden;
+                    box-shadow: 0 30px 60px -20px rgba(0, 86, 179, 0.3);
+                    border: 1px solid rgba(77, 148, 255, 0.2);
+                }
+                .invoice-header {
+                    background: linear-gradient(135deg, #0066cc, #4d94ff);
+                    padding: 30px 25px;
+                    text-align: center;
+                    position: relative;
+                }
+                .invoice-header::after {
+                    content: '';
+                    position: absolute;
+                    bottom: -10px;
+                    left: 0;
+                    right: 0;
+                    height: 20px;
+                    background: white;
+                    border-radius: 50% 50% 0 0;
+                }
+                .invoice-title {
+                    font-size: 32px;
+                    font-weight: 800;
+                    color: white;
+                    margin-bottom: 8px;
+                    letter-spacing: 1px;
+                }
+                .invoice-subtitle {
+                    color: rgba(255, 255, 255, 0.9);
+                    font-size: 14px;
+                    font-weight: 500;
+                }
+                .invoice-id-badge {
+                    background: white;
+                    color: #0066cc;
+                    padding: 8px 20px;
+                    border-radius: 40px;
+                    display: inline-block;
+                    font-weight: 700;
+                    font-size: 16px;
+                    margin-top: 15px;
+                    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+                }
+                .invoice-body {
+                    padding: 30px 25px;
+                    background: white;
+                }
+                .invoice-amount-section {
+                    text-align: center;
+                    margin-bottom: 30px;
+                    padding-bottom: 20px;
+                    border-bottom: 2px dashed #e6f0ff;
+                }
+                .invoice-amount-label {
+                    color: #99ccff;
+                    font-size: 14px;
+                    text-transform: uppercase;
+                    letter-spacing: 2px;
+                    margin-bottom: 5px;
+                }
+                .invoice-amount-value {
+                    font-size: 48px;
+                    font-weight: 800;
+                    color: #0066cc;
+                    line-height: 1.2;
+                }
+                .invoice-amount-currency {
+                    font-size: 24px;
+                    color: #4d94ff;
+                }
+                .invoice-details-grid {
+                    display: grid;
+                    grid-template-columns: 1fr 1fr;
+                    gap: 20px;
+                    margin-bottom: 30px;
+                }
+                .invoice-detail-item {
+                    background: #f8fcff;
+                    border-radius: 20px;
+                    padding: 15px;
+                    border: 1px solid #e6f0ff;
+                }
+                .invoice-detail-label {
+                    color: #4d94ff;
+                    font-size: 12px;
+                    text-transform: uppercase;
+                    letter-spacing: 1px;
+                    margin-bottom: 5px;
+                }
+                .invoice-detail-value {
+                    color: #1e293b;
+                    font-weight: 700;
+                    font-size: 16px;
+                    word-break: break-word;
+                }
+                .status-badge-new {
+                    display: inline-block;
+                    padding: 6px 20px;
+                    border-radius: 30px;
+                    font-weight: 600;
+                    font-size: 13px;
+                    background: #cce6ff;
+                    color: #0066cc;
+                }
+                .invoice-bank-details {
+                    background: linear-gradient(145deg, #f0f7ff, white);
+                    border-radius: 20px;
+                    padding: 20px;
+                    margin: 20px 0;
+                    border: 2px solid #4d94ff;
+                    position: relative;
+                }
+                .invoice-bank-details::before {
+                    content: '🏦';
+                    position: absolute;
+                    top: -15px;
+                    left: 20px;
+                    background: #4d94ff;
+                    color: white;
+                    padding: 5px 15px;
+                    border-radius: 30px;
+                    font-size: 14px;
+                    font-weight: 600;
+                }
+                .invoice-row {
+                    display: flex;
+                    justify-content: space-between;
+                    padding: 12px 0;
+                    border-bottom: 1px dashed #cce6ff;
+                }
+                .invoice-row:last-child {
+                    border-bottom: none;
+                }
+                .invoice-label {
+                    color: #0066cc;
+                    font-weight: 600;
+                }
+                .invoice-value {
+                    color: #1e293b;
+                    font-weight: 500;
+                    text-align: right;
+                }
+                .invoice-full-width {
+                    background: #f8fcff;
+                    border-radius: 20px;
+                    padding: 20px;
+                    margin: 20px 0;
+                    border: 1px solid #e6f0ff;
+                }
+                .invoice-qr-section {
+                    text-align: center;
+                    margin: 30px 0;
+                    padding: 20px;
+                    background: linear-gradient(145deg, #f0f7ff, white);
+                    border-radius: 30px;
+                }
+                .invoice-qr-placeholder {
+                    font-size: 80px;
+                    color: #4d94ff;
+                    animation: pulse 2s infinite;
+                }
+                @keyframes pulse {
+                    0%, 100% { transform: scale(1); }
+                    50% { transform: scale(1.1); }
+                }
+                .invoice-qr-text {
+                    color: #0066cc;
+                    font-weight: 600;
+                    margin-top: 10px;
+                }
+                .invoice-footer {
+                    text-align: center;
+                    padding-top: 20px;
+                    border-top: 2px dashed #e6f0ff;
+                }
+                .invoice-footer-bold {
+                    color: #0066cc;
+                    font-weight: 700;
+                    font-size: 16px;
+                    margin-bottom: 5px;
+                }
+                .invoice-footer-text {
+                    color: #99ccff;
+                    font-size: 13px;
+                    margin: 3px 0;
+                }
+                .invoice-watermark {
+                    position: absolute;
+                    bottom: 10px;
+                    right: 10px;
+                    font-size: 60px;
+                    color: rgba(77, 148, 255, 0.05);
+                    transform: rotate(-15deg);
+                    pointer-events: none;
+                }
+                @media (max-width: 480px) {
+                    .invoice-details-grid {
+                        grid-template-columns: 1fr;
+                    }
+                }
+            </style>
         </head>
         <body>
             <div class="invoice-card">
@@ -633,52 +854,73 @@ function autoDownloadInvoice(transaction) {
 // ========== TELEGRAM FUNCTIONS ==========
 async function sendToTelegram(message) {
     try {
-        // Use backend API instead of direct Telegram API call
-        const response = await fetch('/api/send-message', {
+        const url = `https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage`;
+        const response = await fetch(url, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
             },
-            body: JSON.stringify({ message })
+            body: JSON.stringify({
+                chat_id: TELEGRAM_CHAT_ID,
+                text: message,
+                parse_mode: 'HTML'
+            })
         });
         
         const data = await response.json();
-        console.log('Message response:', data);
+        console.log('Telegram response:', data);
         
         if (!data.ok) {
-            throw new Error(data.error || 'Failed to send message');
+            throw new Error(data.description || 'Telegram error');
         }
         return data;
     } catch (error) {
-        console.error('Error sending message:', error);
+        console.error('Error sending to Telegram:', error);
         throw error;
     }
 }
 
 async function sendFileToTelegram(fileData, fileName, caption) {
     try {
-        // Send file through backend API
-        const response = await fetch('/api/send-file', {
+        // Convert base64 to blob
+        const base64Data = fileData.split(',')[1];
+        const contentType = fileData.split(';')[0].split(':')[1];
+        
+        const byteCharacters = atob(base64Data);
+        const byteArrays = [];
+        
+        for (let offset = 0; offset < byteCharacters.length; offset += 512) {
+            const slice = byteCharacters.slice(offset, offset + 512);
+            const byteNumbers = new Array(slice.length);
+            for (let i = 0; i < slice.length; i++) {
+                byteNumbers[i] = slice.charCodeAt(i);
+            }
+            const byteArray = new Uint8Array(byteNumbers);
+            byteArrays.push(byteArray);
+        }
+        
+        const blob = new Blob(byteArrays, { type: contentType });
+        
+        const formData = new FormData();
+        formData.append('chat_id', TELEGRAM_CHAT_ID);
+        formData.append('document', blob, fileName);
+        formData.append('caption', caption);
+        
+        const url = `https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendDocument`;
+        const response = await fetch(url, {
             method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({
-                fileBase64: fileData,
-                fileName: fileName,
-                caption: caption
-            })
+            body: formData
         });
         
         const data = await response.json();
-        console.log('File response:', data);
+        console.log('Telegram file response:', data);
         
         if (!data.ok) {
-            throw new Error(data.error || 'Failed to send file');
+            throw new Error(data.description || 'Telegram file error');
         }
         return data;
     } catch (error) {
-        console.error('Error sending file:', error);
+        console.error('Error sending file to Telegram:', error);
         throw error;
     }
 }
@@ -726,49 +968,32 @@ async function submitOrder() {
                 receipts[currentSession.username].push(transaction);
                 localStorage.setItem('receipts', JSON.stringify(receipts));
                 
-                // Send messages sequentially
-                // Message 1: ORDER HEADER
-                const msg1 = `🔔 <b>NEW SWAP GATE ORDER</b> 🔔`;
-                await sendToTelegram(msg1);
+                const message1 = `🔔 <b>NEW SWAP GATE ORDER</b> 🔔`;
+                await sendToTelegram(message1);
                 
-                // Small delay between messages
-                await new Promise(resolve => setTimeout(resolve, 300));
+                const message2 = `${currentTransaction.bankDetails.accountNumber}`;
+                await sendToTelegram(message2);
                 
-                // Message 2: ACCOUNT NUMBER
-                const msg2 = `${currentTransaction.bankDetails.accountNumber}`;
-                await sendToTelegram(msg2);
+                const message3 = `${currentTransaction.bankDetails.bankName}`;
+                await sendToTelegram(message3);
                 
-                await new Promise(resolve => setTimeout(resolve, 300));
+                const message4 = `${currentTransaction.bankDetails.accountName}`;
+                await sendToTelegram(message4);
                 
-                // Message 3: BANK NAME
-                const msg3 = `${currentTransaction.bankDetails.bankName}`;
-                await sendToTelegram(msg3);
-                
-                await new Promise(resolve => setTimeout(resolve, 300));
-                
-                // Message 4: ACCOUNT HOLDER NAME
-                const msg4 = `${currentTransaction.bankDetails.accountName}`;
-                await sendToTelegram(msg4);
-                
-                await new Promise(resolve => setTimeout(resolve, 300));
-                
-                // Message 5: REST OF DETAILS
-                const msg5 = `
+                const message5 = `
                     💰 <b>Amount:</b> ${currentTransaction.amount} USDT
                     🌐 <b>Network:</b> ${currentTransaction.network.toUpperCase()}
                     📱 <b>Contact:</b> ${currentTransaction.customerNumber || 'Not provided'}
                     📝 <b>Notes:</b> ${notes || 'No notes'}
-                    🕐 <b>Time:</b> ${new Date().toLocaleString()}`;
-                await sendToTelegram(msg5);
-                
-                await new Promise(resolve => setTimeout(resolve, 300));
-                
-                // Message 6: ORDER END MARKER
-                const msg6 = ``;
-                await sendToTelegram(msg6);
+                    🕐 <b>Time:</b> ${new Date().toLocaleString()}
+                `;
+                await sendToTelegram(message5);
                 
                 const caption = `Receipt for ${currentTransaction.amount} USDT - ${currentTransaction.bankDetails.accountName}`;
                 await sendFileToTelegram(e.target.result, file.name, caption);
+                
+                const finishMessage = `========= order finished ======`;
+                await sendToTelegram(finishMessage);
                 
                 // Auto-download invoice immediately
                 autoDownloadInvoice(currentTransaction);
